@@ -33,9 +33,25 @@ const getAllCategories = async (req, res, next) => {
 };
 
 const updateCategory = async (req, res) => {
+  const { categoryId } = req.params;
+  if (!categoryId) {
+    return next(createError('Kindly provide the category id', 400));
+  }
+
+  const { name } = req.body;
+  if (!name?.trim()) {
+    return next(createError('Name is required', 400));
+  }
   try {
+    const updated = await categoryModel.findByIdAndUpdate(
+      categoryId,
+      { name },
+      { new: true, runValidators: true }
+    );
+
     res.status(201).json({
-      message: 'Successfull'
+      message: 'Category updated Successfully',
+      category: updated
     });
   } catch (error) {
     console.log(error);

@@ -81,10 +81,6 @@ const loginUser = async (req, res, next) => {
 };
 
 const getUsers = async (req, res, next) => {
-  if (req.userRole !== 'admin') {
-    return next(createError('Only Admins users can view the list', 401));
-  }
-
   try {
     const users = await userModel.find().select(['-password', '-__v']);
     res.status(200).json({
