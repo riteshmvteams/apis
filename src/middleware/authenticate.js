@@ -41,4 +41,14 @@ const authenticate = (req, res, next) => {
   next();
 };
 
+export const permissionTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.userRole)) {
+      next(createError('You do not have permission for this Route', 401));
+    }
+
+    next();
+  };
+};
+
 export default authenticate;

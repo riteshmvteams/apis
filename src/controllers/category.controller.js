@@ -7,10 +7,6 @@ const createCategory = async (req, res, next) => {
     return next(createError('Name is required', 400));
   }
 
-  if (req.userRole !== 'admin') {
-    return next(createError('only Admins can create the Category', 401));
-  }
-
   try {
     const category = await categoryModel.create({ name, user: req.userId });
     res.status(201).json({
@@ -36,4 +32,33 @@ const getAllCategories = async (req, res, next) => {
   }
 };
 
-export { createCategory, getAllCategories };
+const updateCategory = async (req, res) => {
+  try {
+    res.status(201).json({
+      message: 'Successfull'
+    });
+  } catch (error) {
+    console.log(error);
+    return next(createError('Error while Updating the categories', 500));
+  }
+};
+
+const deleteCategory = async (req, res, next) => {
+  const { categoryId } = req.params;
+  if (!categoryId) {
+    return next(createError('Kindly provide the category id', 400));
+  }
+
+  try {
+    await categoryModel.deleteOne({ _id: categoryId });
+
+    res.status(200).json({
+      message: 'Deleted Successfull'
+    });
+  } catch (error) {
+    console.log(error);
+    return next(createError('Error while Updating the categories', 500));
+  }
+};
+
+export { createCategory, getAllCategories, updateCategory, deleteCategory };
