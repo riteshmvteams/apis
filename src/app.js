@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cron from 'node-cron';
 
 import { createError } from './utils/createError.js';
 import globalErrorHandler from './middleware/globalErrorHanlder.js';
@@ -22,6 +23,12 @@ app.get('/', (req, res) => {
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/facts', factRouter);
 app.use('/api/v1/categories', categoryRouter);
+
+const someTask = () => {
+  console.log('cron Run');
+};
+
+cron.schedule('0 * * * *', someTask);
 
 app.use('*', (req, res, next) => {
   next(createError('This Route Not Available', 404));
