@@ -28,7 +28,7 @@ const someTask = () => {
   console.log('cron Run');
 };
 
-cron.schedule('0 * * * *', someTask);
+cron.schedule('* * * * *', someTask);
 
 app.use('*', (req, res, next) => {
   next(createError('This Route Not Available', 404));
